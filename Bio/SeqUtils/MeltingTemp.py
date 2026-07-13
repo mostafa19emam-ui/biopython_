@@ -847,6 +847,7 @@ def Tm_NN(
     Mg=0,
     dNTPs=0,
     saltcorr=5,
+    verbose = False
 ):
     """Return the Tm using nearest neighbor thermodynamics.
 
@@ -1067,7 +1068,37 @@ def Tm_NN(
         # Tm = 1/(1/Tm + corr)
         melting_temp = 1 / (1 / (melting_temp + 273.15) + corr) - 273.15
 
+    return melting_temp if not verbous else melting_temp, 1000*delta_h, delta_s , k , dnac1, dnac2
+
+
+
+
+def hybrid_percent(
+    seq,
+    Temp,
+    *args,
+    **kwargs
+):
+    """
+    Calculate the percentage of total DNA oligos that hybridize into double-stranded form at the specific temperature, supposing thermodynamic equilibrium.
+    This metric is useful for assessing the potential impact of non-specific hybridization events at the annealing temperature,
+    allowing users to design more effective primers and probes
+
+    Arguments:
+     - seq: The primer/probe sequence as string or Biopython sequence object.
+       For RNA/DNA hybridizations seq must be the RNA sequence.
+     - Temp: The temperature (in °C) at which to evaluate the hybridization percentage
+   Additional arguments and keyword arguments are passed directly to the `Tmm_NN` function
+    """
+    _, delta_h, delta_s, Km, c1, c2 = Tm_NN(seq,*args,**kwargs)
+    delta_G = delta_h - Temp* delta_s
+    K = math.exp(- delta_G / (1.987 * (Temp + 273.15)) )    # universal gas constant (R) = 1.987
+    u = (c1 + c2 - 1.0 / K) / 2.0
+    x = u - math.sqrt(u**2 -c1*c2)
+    
+    
     return melting_temp
+
 
 
 if __name__ == "__main__":
