@@ -1084,6 +1084,8 @@ def hybrid_percent(
     specific temperature, supposing thermodynamic equilibrium.
     This metric is useful for assessing the potential impact of non-specific hybridization events
     at the annealing temperature, allowing users to design more effective primers and probes
+    
+    Return: percentage of hybridized oligos , concentration of dsDNA at specified temperature
 
     Arguments:
      - seq: The primer/probe sequence as string or Biopython sequence object.
@@ -1091,7 +1093,7 @@ def hybrid_percent(
      - Temp: The temperature (in °C) at which to evaluate the hybridization percentage
     Additional arguments and keyword arguments are passed directly to the `Tmm_NN` function
     """
-    _, delta_h, delta_s, c1, c2 = Tm_NN(seq,verbose = True, *args,**kwargs)
+    _, delta_h, delta_s, c1, c2 = Tm_NN(seq, verbose = True, *args,**kwargs)
     delta_G = delta_h - (Temp+273.15) * delta_s
     K = math.exp( - delta_G /1.987 /(Temp + 273.15) )    # universal gas constant (R) = 1.987
     u = (c1 + c2 + 1 / K) / 2
