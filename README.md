@@ -26,6 +26,13 @@ print(f'melting temperature of probe = {MeltingTemp.Tm_NN(seq)}', '\n',
 However, understanding the ratio of which primers anneal to non-specific site across various annealing temperatures is crucial, as this knowledge allows you to optimize your assay and minimize off-targtes
 
 ```
-from Bio
+from Bio.SeqUtils import MeltingTemp
+import matplotlib.pyplot as plt
+seq = 'ACAGTGAATACGTCATATGCTGCCA'
+Temps = list(range(20,60,5))
+Xs = [MeltingTemp.hybrid_percent(seq[-9:],t) for t in Temps]
+plt.plot(Temps,Xs)
+plt.show()
+```
 
-ATGCTGCCA
+
