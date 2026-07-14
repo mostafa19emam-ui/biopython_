@@ -1092,10 +1092,10 @@ def hybrid_percent(
     Additional arguments and keyword arguments are passed directly to the `Tmm_NN` function
     """
     _, delta_h, delta_s, c1, c2 = Tm_NN(seq,verbose = True, *args,**kwargs)
-    delta_G = delta_h - Temp* delta_s
-    K = math.exp(- delta_G / (1.987 * (Temp + 273.15)) )    # universal gas constant (R) = 1.987
-    u = (c1 + c2 - 1.0 / K) / 2.0
-    return u - math.sqrt(u**2 -c1*c2)
+    delta_G = delta_h - (Temp+273.15) * delta_s
+    K = math.exp( - delta_G /1.987 /(Temp + 273.15) )    # universal gas constant (R) = 1.987
+    u = (c1 + c2 + 1 / K) / 2
+    return (u - math.sqrt(u**2 -c1*c2)) / min(c1,c2) , (u - math.sqrt(u**2 -c1*c2))
 
 
 
