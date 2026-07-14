@@ -1097,7 +1097,8 @@ def hybrid_percent(
     delta_G = delta_h - (Temp+273.15) * delta_s
     K = math.exp( - delta_G /1.987 /(Temp + 273.15) )    # universal gas constant (R) = 1.987
     u = (c1 + c2 + 1 / K) / 2
-    return (u - math.sqrt(u**2 -c1*c2)) / min(c1,c2) , (u - math.sqrt(u**2 -c1*c2))
+    x = u - math.sqrt(u**2 -c1*c2)
+    return x / min(c1,c2) , x
 
 
 
