@@ -17,10 +17,10 @@ also suppose that there is a non-specific attachment of 9nt 3' end on another si
 from Bio.SeqUtils import MeltingTemp
 seq = 'ACATACGTCATATGCTGCCA'
 print(f'melting temperature of probe = {MeltingTemp.Tm_NN(seq)}', '\n',
-      f'melting temperatue of non-specific attachment = {MeltingTemp.Tm_NN(seq[-9:])}')
+      f'melting temperature of non-specific attachment = {MeltingTemp.Tm_NN(seq[-9:])}')
 
 >>> melting temperature of probe = 51.291240229480024
->>> melting temperatue of non-specific attachment = 22.229141439820523
+>>> melting temperature of non-specific attachment = 22.229141439820523
 ```
 
 However, understanding the ratio of which primers anneal to non-specific site across various annealing temperatures is crucial, as this knowledge allows you to optimize your assay and minimize off-targtes
@@ -30,12 +30,16 @@ from Bio.SeqUtils import MeltingTemp
 import matplotlib.pyplot as plt
 seq = 'ACATACGTCATATGCTGCCA'
 Temps = list(range(0,60,5))
-Xs = [MeltingTemp.hybrid_percent(seq[-9:],t) for t in Temps]
-plt.plot(Temps,Xs)
+Xs = [MeltingTemp.hybrid_percent(seq[-9:],t)[0] for t in Temps]
+plt.plot(Temps,Xs,'.-')
+plt.plot(MeltingTemp.Tm_NN(seq[-9:]),0.5,'*')
 plt.show()
 ```
 
 <img width="562" height="294" alt="image" src="https://github.com/user-attachments/assets/1d401bfa-de38-4315-a040-84c5d9533582" />
+
+
+this is useful to enhance primer/prob specificity by optimizing temperature
 
 
 ## Theory
